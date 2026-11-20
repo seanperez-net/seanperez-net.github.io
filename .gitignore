@@ -1,0 +1,7 @@
+.DS_Store
+
+# Claude Code and other local AI tooling: never committed
+.claude/
+CLAUDE.md
+CLAUDE.local.md
+.mcp.json
