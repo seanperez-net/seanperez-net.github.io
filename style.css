@@ -1,15 +1,323 @@
+/*
+ * No JavaScript. Every colour is computed here from ONE number, --hue (0 to 360), which the
+ * hue slider in the header sets. Light and dark come from light-dark().
+ *
+ * This is the Material 3 colour system, written in OKLCH (which CSS has built in) in place of
+ * Material's own HCT space, which needs a JavaScript generator:
+ *   1. Tones. Material's lightness steps, 0 to 100. Tone T is the OKLCH lightness
+ *      (T + 16) / 116.
+ *   2. Palettes. Five, as in Material: each is a chroma and a hue. The chroma values are the
+ *      averages measured from Material's generated colours (blue, green, red, yellow sources).
+ *   3. Roles. Material's names. Each role is one palette at a fixed tone for light and another
+ *      for dark, exactly as in the Material 3 spec. Fixed tones are what keep contrast the same
+ *      whatever hue is picked.
+ * The error roles do not follow the hue in Material either: they are its fixed baseline reds.
+ *
+ * Token names use Tailwind v4's theme prefixes, so this list can move into a Tailwind
+ * "@theme inline" block as it is and produce the utilities: --color-* (bg-primary,
+ * text-on-surface), --shadow-* (shadow-1), --radius-* (rounded-lg), --text-* (text-label-large),
+ * --spacing-* (p-layout-margin). --hue, --tone-* and the --*-palette values are internal
+ * working values with no utility, so they have no prefix.
+ */
+@property --hue {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 260;
+}
+
 :root {
   color-scheme: light dark;
-  --text: #171717;
-  --muted: #525252;
-  --bg: #ffffff;
+
+  /* 1. Tones */
+  --tone-4: calc((4 + 16) / 116);
+  --tone-6: calc((6 + 16) / 116);
+  --tone-10: calc((10 + 16) / 116);
+  --tone-12: calc((12 + 16) / 116);
+  --tone-17: calc((17 + 16) / 116);
+  --tone-20: calc((20 + 16) / 116);
+  --tone-22: calc((22 + 16) / 116);
+  --tone-24: calc((24 + 16) / 116);
+  --tone-30: calc((30 + 16) / 116);
+  --tone-40: calc((40 + 16) / 116);
+  --tone-50: calc((50 + 16) / 116);
+  --tone-60: calc((60 + 16) / 116);
+  --tone-80: calc((80 + 16) / 116);
+  --tone-87: calc((87 + 16) / 116);
+  --tone-90: calc((90 + 16) / 116);
+  --tone-92: calc((92 + 16) / 116);
+  --tone-94: calc((94 + 16) / 116);
+  --tone-95: calc((95 + 16) / 116);
+  --tone-96: calc((96 + 16) / 116);
+  --tone-98: calc((98 + 16) / 116);
+  --tone-100: calc((100 + 16) / 116);
+
+  /* 2. Palettes: chroma, then hue */
+  --primary-palette: 0.092 var(--hue);
+  --secondary-palette: 0.04 var(--hue);
+  --tertiary-palette: 0.06 calc(var(--hue) + 60);
+  --neutral-palette: 0.014 var(--hue);
+  --neutral-variant-palette: 0.02 var(--hue);
+
+  /* 3. Roles: light tone, then dark tone. Tone 100 is written as plain white: at full lightness
+     a browser keeps a trace of the chroma, and Material's tone 100 is exactly white. */
+  --color-primary: light-dark(
+    oklch(var(--tone-40) var(--primary-palette)),
+    oklch(var(--tone-80) var(--primary-palette))
+  );
+  --color-on-primary: light-dark(
+    #ffffff,
+    oklch(var(--tone-20) var(--primary-palette))
+  );
+  --color-primary-container: light-dark(
+    oklch(var(--tone-90) var(--primary-palette)),
+    oklch(var(--tone-30) var(--primary-palette))
+  );
+  --color-on-primary-container: light-dark(
+    oklch(var(--tone-10) var(--primary-palette)),
+    oklch(var(--tone-90) var(--primary-palette))
+  );
+
+  --color-secondary: light-dark(
+    oklch(var(--tone-40) var(--secondary-palette)),
+    oklch(var(--tone-80) var(--secondary-palette))
+  );
+  --color-on-secondary: light-dark(
+    #ffffff,
+    oklch(var(--tone-20) var(--secondary-palette))
+  );
+  --color-secondary-container: light-dark(
+    oklch(var(--tone-90) var(--secondary-palette)),
+    oklch(var(--tone-30) var(--secondary-palette))
+  );
+  --color-on-secondary-container: light-dark(
+    oklch(var(--tone-10) var(--secondary-palette)),
+    oklch(var(--tone-90) var(--secondary-palette))
+  );
+
+  --color-tertiary: light-dark(
+    oklch(var(--tone-40) var(--tertiary-palette)),
+    oklch(var(--tone-80) var(--tertiary-palette))
+  );
+  --color-on-tertiary: light-dark(
+    #ffffff,
+    oklch(var(--tone-20) var(--tertiary-palette))
+  );
+  --color-tertiary-container: light-dark(
+    oklch(var(--tone-90) var(--tertiary-palette)),
+    oklch(var(--tone-30) var(--tertiary-palette))
+  );
+  --color-on-tertiary-container: light-dark(
+    oklch(var(--tone-10) var(--tertiary-palette)),
+    oklch(var(--tone-90) var(--tertiary-palette))
+  );
+
+  --color-surface-dim: light-dark(
+    oklch(var(--tone-87) var(--neutral-palette)),
+    oklch(var(--tone-6) var(--neutral-palette))
+  );
+  --color-surface: light-dark(
+    oklch(var(--tone-98) var(--neutral-palette)),
+    oklch(var(--tone-6) var(--neutral-palette))
+  );
+  --color-surface-bright: light-dark(
+    oklch(var(--tone-98) var(--neutral-palette)),
+    oklch(var(--tone-24) var(--neutral-palette))
+  );
+  --color-surface-container-lowest: light-dark(
+    #ffffff,
+    oklch(var(--tone-4) var(--neutral-palette))
+  );
+  --color-surface-container-low: light-dark(
+    oklch(var(--tone-96) var(--neutral-palette)),
+    oklch(var(--tone-10) var(--neutral-palette))
+  );
+  --color-surface-container: light-dark(
+    oklch(var(--tone-94) var(--neutral-palette)),
+    oklch(var(--tone-12) var(--neutral-palette))
+  );
+  --color-surface-container-high: light-dark(
+    oklch(var(--tone-92) var(--neutral-palette)),
+    oklch(var(--tone-17) var(--neutral-palette))
+  );
+  --color-surface-container-highest: light-dark(
+    oklch(var(--tone-90) var(--neutral-palette)),
+    oklch(var(--tone-22) var(--neutral-palette))
+  );
+
+  --color-on-surface: light-dark(
+    oklch(var(--tone-10) var(--neutral-palette)),
+    oklch(var(--tone-90) var(--neutral-palette))
+  );
+  --color-on-surface-variant: light-dark(
+    oklch(var(--tone-30) var(--neutral-variant-palette)),
+    oklch(var(--tone-80) var(--neutral-variant-palette))
+  );
+  --color-outline: light-dark(
+    oklch(var(--tone-50) var(--neutral-variant-palette)),
+    oklch(var(--tone-60) var(--neutral-variant-palette))
+  );
+  --color-outline-variant: light-dark(
+    oklch(var(--tone-80) var(--neutral-variant-palette)),
+    oklch(var(--tone-30) var(--neutral-variant-palette))
+  );
+
+  --color-inverse-surface: light-dark(
+    oklch(var(--tone-20) var(--neutral-palette)),
+    oklch(var(--tone-90) var(--neutral-palette))
+  );
+  --color-inverse-on-surface: light-dark(
+    oklch(var(--tone-95) var(--neutral-palette)),
+    oklch(var(--tone-20) var(--neutral-palette))
+  );
+  --color-inverse-primary: light-dark(
+    oklch(var(--tone-80) var(--primary-palette)),
+    oklch(var(--tone-40) var(--primary-palette))
+  );
+
+  /* Not a Material role: e-store's "floating surface", for anything that floats over the page
+     with a shadow (menus). White in light, where the shadow shows the lift; a lighter tone in
+     dark, where Material shows elevation by tone because a shadow hardly shows. */
+  --color-surface-floating: light-dark(
+    var(--color-surface-container-lowest),
+    var(--color-surface-container-high)
+  );
+
+  --color-error: light-dark(#ba1a1a, #ffb4ab);
+  --color-on-error: light-dark(#ffffff, #690005);
+  --color-error-container: light-dark(#ffdad6, #93000a);
+  --color-on-error-container: light-dark(#410002, #ffdad6);
+
+  --color-shadow: #000000;
+  --color-scrim: #000000;
+
+  /* Elevation: Material 3 levels 0 to 5. Each is two shadows, a key shadow at 30% and an
+     ambient shadow at 15% of the shadow colour. */
+  --shadow-color-key: color-mix(in oklch, var(--color-shadow) 30%, transparent);
+  --shadow-color-ambient: color-mix(in oklch, var(--color-shadow) 15%, transparent);
+  --shadow-0: none;
+  --shadow-1: 0 1px 2px 0 var(--shadow-color-key), 0 1px 3px 1px var(--shadow-color-ambient);
+  --shadow-2: 0 1px 2px 0 var(--shadow-color-key), 0 2px 6px 2px var(--shadow-color-ambient);
+  --shadow-3: 0 1px 3px 0 var(--shadow-color-key), 0 4px 8px 3px var(--shadow-color-ambient);
+  --shadow-4: 0 2px 3px 0 var(--shadow-color-key), 0 6px 10px 4px var(--shadow-color-ambient);
+  --shadow-5: 0 4px 4px 0 var(--shadow-color-key), 0 8px 12px 6px var(--shadow-color-ambient);
+
+  /* State: Material 3 state-layer opacities, shared by every control. */
+  --opacity-hover: 0.08;
+  --opacity-focus: 0.1;
+  --opacity-pressed: 0.1;
+  --opacity-dragged: 0.16;
+  --opacity-disabled: 0.38;
+  --opacity-disabled-container: 0.12;
+
+  /* Shape: Material 3 corner sizes. */
+  --radius-xs: 0.25rem;
+  --radius-lg: 1rem;
+  --radius-full: calc(infinity * 1px);
+
+  /* Type: the Material 3 styles this page uses. */
+  --text-body-large: 1rem;
+  --text-body-large--line-height: 1.5rem;
+  --text-body-large--letter-spacing: 0.03125rem;
+  --text-body-large--font-weight: 400;
+  --text-title-large: 1.375rem;
+  --text-title-large--line-height: 1.75rem;
+  --text-title-large--letter-spacing: 0rem;
+  --text-title-large--font-weight: 400;
+  --text-label-large: 0.875rem;
+  --text-label-large--line-height: 1.25rem;
+  --text-label-large--letter-spacing: 0.00625rem;
+  --text-label-large--font-weight: 500;
+
+  /* Layout: Material 3. The margin is the space between the window edge and the content
+     (16px, and 24px from 600px wide); the app bar is 64px tall. */
+  --spacing-layout-margin: 1rem;
+  --spacing-layout-gutter: 0.5rem;
+  --spacing-layout-app-bar: 4rem;
+
+  @media (min-width: 600px) {
+    --spacing-layout-margin: 1.5rem;
+  }
+}
+
+/*
+ * The hue slider sets --hue with no JavaScript (scroll-driven animations).
+ * The slider's thumb is given a view timeline: how far along the track it is. The page root
+ * runs an animation of --hue on that timeline, so the thumb's position IS the hue.
+ * A browser without scroll-driven animations keeps the initial hue above; the slider then
+ * moves but changes nothing.
+ */
+@keyframes hue {
+  from {
+    --hue: 360;
+  }
+  to {
+    --hue: 0;
+  }
+}
+
+:root {
+  timeline-scope: --hue-thumb;
+  animation: hue linear both;
+  animation-timeline: --hue-thumb;
+  animation-range: entry 100% exit 0%;
+}
+
+#hue {
+  appearance: none;
+  inline-size: 8rem;
+  block-size: 1.25rem;
+  margin: 0;
+  border-radius: var(--radius-full);
+  /* The track shows the hues it selects. overflow makes the slider the "scroller" its
+     thumb's position is measured in. */
+  background: linear-gradient(in oklch longer hue to right, oklch(0.7 0.15 0), oklch(0.7 0.15 360));
+  overflow: hidden;
+  cursor: pointer;
+}
+
+#hue::-webkit-slider-thumb {
+  appearance: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--color-on-surface);
+  view-timeline: --hue-thumb inline;
+}
+
+#hue::-moz-range-thumb {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 1px var(--color-on-surface);
+  view-timeline: --hue-thumb inline;
+}
+
+/*
+ * Light and dark. Unchecked, the sun / moon button follows the system; checked, it is the
+ * opposite. Changing color-scheme is enough, because every colour is a light-dark() pair.
+ * --light is 1 when the light scheme is in use and 0 when dark: the two icons read it.
+ */
+:root {
+  --light: 1;
+}
+
+:root:has(#theme-switch:checked) {
+  color-scheme: dark;
+  --light: 0;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --text: #ededed;
-    --muted: #a3a3a3;
-    --bg: #0a0a0a;
+    --light: 0;
+  }
+
+  :root:has(#theme-switch:checked) {
+    color-scheme: light;
+    --light: 1;
   }
 }
 
@@ -17,41 +325,308 @@
   box-sizing: border-box;
 }
 
+/* One focus ring for everything the keyboard can reach. */
+:focus-visible,
+.icon-button:has(:focus-visible) {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
+
+/*
+ * The page is one grid, and the margins are grid tracks, not margin or padding:
+ *
+ *   header (app bar, full width)
+ *   aside#start | main (takes the rest) | aside#end
+ *   footer (full width)
+ *
+ * The side tracks and the bottom track are "at least the margin, otherwise as big as their
+ * content": an empty aside or footer IS the page margin, and it grows to fit what is put in it.
+ */
 body {
   margin: 0;
-  min-height: 100vh;
+  min-block-size: 100dvb;
   display: grid;
-  place-items: center;
+  grid-template-columns:
+    [frame-start] minmax(var(--spacing-layout-margin), auto)
+    [body-start] minmax(0, 1fr)
+    [body-end] minmax(var(--spacing-layout-margin), auto) [frame-end];
+  grid-template-rows:
+    [frame-start header-start] var(--spacing-layout-app-bar)
+    [header-end main-start] 1fr
+    [main-end footer-start] minmax(var(--spacing-layout-margin), auto) [footer-end frame-end];
   font-family: system-ui, sans-serif;
-  line-height: 1.5;
-  color: var(--text);
-  background: var(--bg);
+  font-size: var(--text-body-large);
+  line-height: var(--text-body-large--line-height);
+  letter-spacing: var(--text-body-large--letter-spacing);
+  color: var(--color-on-surface);
+  background: var(--color-surface-container);
 }
 
+/* The app bar: the first item (the name) takes the free space, the rest sit at the end. */
+body > header {
+  grid-area: header / frame;
+  padding-inline: var(--spacing-layout-margin);
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--spacing-layout-gutter);
+}
+
+/* The main pane: its own surface on the frame, Material 3 large corner. */
 main {
-  width: 100%;
-  max-width: 40rem;
-  padding: 1.5rem;
+  grid-area: main / body;
+  padding: var(--spacing-layout-margin);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
 }
 
-h1 {
+main > header {
+  margin-block-end: 1rem;
+}
+
+#start {
+  grid-area: main / frame-start / main / body-start;
+}
+
+#end {
+  grid-area: main / body-end / main / frame-end;
+}
+
+body > footer {
+  grid-area: footer / frame;
+}
+
+/* Anything put inside an aside or the footer gets the margin as its inset. */
+aside > *,
+body > footer > * {
   margin: 0;
-  font-size: 2.25rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  padding: var(--spacing-layout-margin);
+  color: var(--color-on-surface-variant);
 }
 
-p {
-  margin: 0.5rem 0 1.5rem;
-  color: var(--muted);
+aside > * {
+  inline-size: 16rem;
 }
 
+/* The app bar title and a pane's title: Material 3 title-large. */
+h1,
+h2 {
+  margin: 0;
+  font-size: var(--text-title-large);
+  line-height: var(--text-title-large--line-height);
+  font-weight: var(--text-title-large--font-weight);
+  letter-spacing: var(--text-title-large--letter-spacing);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/*
+ * Links take their colour from their container (here: nav), not from a rule on the link.
+ * Chrome does not apply slider-driven values to a rule that colours a VISITED link directly,
+ * so such a link fell back to the text colour; an inherited colour works for both.
+ */
 nav {
   display: flex;
-  gap: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  color: var(--color-primary);
 }
 
 a {
   color: inherit;
   text-underline-offset: 0.25em;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/*
+ * A link marked rel="external" gets the "opens another site" icon after it. The icon is a
+ * mask painted in the link's own colour, and "external link" is its text for screen readers.
+ */
+a[rel~="external"]::after {
+  content: "";
+  content: "" / "external link";
+  display: inline-block;
+  inline-size: 1em;
+  block-size: 1em;
+  margin-inline-start: 0.25em;
+  vertical-align: -0.15em;
+  background: currentColor;
+  mask: url("icons/open_in_new.svg") center / contain no-repeat;
+}
+
+/*
+ * Skip link: off screen until its link has keyboard focus, then a filled pill at the top.
+ * The colours sit on the wrapper and the link inherits them (see the note on links).
+ */
+.skip-link {
+  position: fixed;
+  inset-block-start: 0.75rem;
+  inset-inline-start: var(--spacing-layout-margin);
+  z-index: 1;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  box-shadow: var(--shadow-3);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-within {
+  transform: none;
+}
+
+.skip-link a {
+  display: block;
+  padding: 0.625rem 1.5rem;
+  border-radius: inherit;
+  font-size: var(--text-label-large);
+  line-height: var(--text-label-large--line-height);
+  font-weight: var(--text-label-large--font-weight);
+  letter-spacing: var(--text-label-large--letter-spacing);
+  text-decoration: none;
+}
+
+/*
+ * Icon button: the Material 3 standard icon button. 40px round, 24px icon in
+ * on-surface-variant. Hover, focus and pressed mix the icon colour into the background at
+ * the shared state opacity (Material's "state layer"). It is a <button>, or a <label> around
+ * a checkbox that is hidden from sight but still there for the keyboard.
+ */
+.icon-button {
+  --state: 0;
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  color: var(--color-on-surface-variant);
+  background: color-mix(in oklch, currentColor calc(var(--state) * 100%), transparent);
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.icon-button:hover {
+  --state: var(--opacity-hover);
+}
+
+.icon-button:focus-visible,
+.icon-button:has(:focus-visible) {
+  --state: var(--opacity-focus);
+}
+
+.icon-button:active {
+  --state: var(--opacity-pressed);
+}
+
+.icon-button svg {
+  grid-area: 1 / 1;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  fill: currentColor;
+}
+
+.icon-button input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: 0;
+  appearance: none;
+  outline: none;
+}
+
+/*
+ * The sun and the moon are stacked. The one for the scheme in use is shown; the other is
+ * faded out, turned and shrunk, so a change makes the new one spin and grow into place.
+ */
+.sun {
+  --shown: var(--light);
+}
+
+.moon {
+  --shown: calc(1 - var(--light));
+}
+
+.sun,
+.moon {
+  opacity: var(--shown);
+  transform: rotate(calc((1 - var(--shown)) * 55deg)) scale(calc(0.4 + 0.6 * var(--shown)));
+  transition:
+    transform 420ms cubic-bezier(0.16, 1.35, 0.3, 1),
+    opacity 180ms ease-out;
+}
+
+/*
+ * Menu: the Material 3 menu, as an HTML popover opened by a button (popovertarget).
+ * surface-floating, 4px corners, elevation level 2, 112 to 280px wide, 8px above and below.
+ * Rows are 48px high with 12px side padding and a 12px gap, and take the on-surface state
+ * layer on hover.
+ * Closed, it is hidden with visibility, NOT display: the hue slider inside must stay laid out,
+ * or its timeline stops and the colours fall back to the initial hue.
+ */
+[popover] {
+  display: grid;
+  inset: auto;
+  inset-block-start: var(--spacing-layout-app-bar);
+  inset-inline-end: var(--spacing-layout-margin);
+  min-inline-size: 7rem;
+  max-inline-size: min(17.5rem, 100% - 2 * var(--spacing-layout-margin));
+  margin: 0;
+  padding: 0.5rem 0;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: var(--color-surface-floating);
+  color: inherit;
+  box-shadow: var(--shadow-2);
+}
+
+/*
+ * Where the browser can anchor it (CSS anchor positioning), the menu hangs from the button
+ * that opens it: its top edge on the button's bottom edge, and its end corner under the
+ * middle of the button. Elsewhere it keeps the fixed place above, under the app bar.
+ */
+@supports (anchor-name: --a) {
+  [popovertarget] {
+    anchor-name: --menu-button;
+  }
+
+  [popover] {
+    position-anchor: --menu-button;
+    inset-block-start: anchor(bottom);
+    inset-inline-end: anchor(center);
+  }
+}
+
+[popover]:not(:popover-open) {
+  visibility: hidden;
+}
+
+[popover] label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-block-size: 3rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+[popover] label:hover {
+  background: color-mix(
+    in oklch,
+    currentColor calc(var(--opacity-hover) * 100%),
+    transparent
+  );
 }
