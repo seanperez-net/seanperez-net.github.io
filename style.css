@@ -653,3 +653,13 @@ a[rel~="external"]::after {
     transparent
   );
 }
+
+/* ── Small page-level extras (no theme change) ──────────────────────────────── */
+/* Headings break into lines of even length; paragraphs avoid a single last word on a line. */
+h1,
+h2 {
+  text-wrap: balance;
+}
+p {
+  text-wrap: pretty;
+}

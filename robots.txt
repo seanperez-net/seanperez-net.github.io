@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://seanperez-net.github.io/sitemap.xml

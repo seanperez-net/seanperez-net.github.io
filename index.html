@@ -2,16 +2,99 @@
 <html lang="en">
 
 <head>
+  <!-- 1. Encoding and viewport first: the browser needs both before it reads anything else. -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Tells the browser both schemes are supported before the stylesheet loads: no white flash in dark mode. -->
   <meta name="color-scheme" content="light dark" />
-  <title>Sean Perez</title>
-  <meta name="description" content="Sean Perez: projects and code." />
+  <!-- The browser's own bars take the page's background (the surface-container role at hue 260). -->
+  <meta name="theme-color" content="#e8eef8" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1c2026" media="(prefers-color-scheme: dark)" />
+
+  <!-- 2. What search engines show: title, description, the one true address. -->
+  <title>Sean Perez: projects and code</title>
+  <meta name="description" content="Sean Perez: projects and code. Links to the website and the source on GitHub." />
+  <meta name="author" content="Sean Perez" />
   <link rel="canonical" href="https://seanperez-net.github.io/" />
+  <!-- Index the page, follow its links, and allow the large image in results. -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
+  <!-- Send only the origin, never the full address, to other sites. -->
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+  <!-- 3. Loading. Open the connection to the site a visitor is most likely to click through to
+       before they click; for GitHub only look the name up (cheaper, and enough). -->
+  <link rel="preconnect" href="https://seanperez.net" />
+  <link rel="dns-prefetch" href="https://github.com" />
+  <!-- The stylesheet blocks rendering on purpose (it is the whole page), so it comes before
+       everything optional. No preload for it: a stylesheet in the head is already found at once. -->
   <link rel="stylesheet" href="style.css" />
   <!-- The one icon style.css loads as a file: fetch it with the stylesheet, not after it. -->
   <link rel="preload" href="icons/open_in_new.svg" as="image" type="image/svg+xml" crossorigin />
+
+  <!-- 4. Link previews (Open Graph: Facebook, LinkedIn, Slack, iMessage, Discord). Addresses
+       must be absolute. The image is 1200 x 630 PNG; its source is og-image.svg. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sean Perez" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://seanperez-net.github.io/" />
+  <meta property="og:title" content="Sean Perez: projects and code" />
+  <meta property="og:description" content="Projects and code. Links to the website and the source on GitHub." />
+  <meta property="og:image" content="https://seanperez-net.github.io/og-image.png" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Sean Perez: projects and code" />
+  <!-- X (Twitter) reads the Open Graph tags above; it only needs to be told the card's size. -->
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- 5. Icons. SVG for browsers (it follows light and dark), PNG for iOS, and the manifest
+       for Android and "install". -->
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
+
+  <!-- 6. Identity: the same person on other sites. -->
+  <link rel="me" href="https://github.com/seanperez-net" />
+
+  <!-- 7. Structured data for search engines (schema.org). This is a DATA block, not a program:
+       the browser never runs it, so the page is still free of JavaScript. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://seanperez-net.github.io/#website",
+          "url": "https://seanperez-net.github.io/",
+          "name": "Sean Perez",
+          "description": "Sean Perez: projects and code.",
+          "inLanguage": "en",
+          "publisher": { "@id": "https://seanperez-net.github.io/#person" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://seanperez-net.github.io/#person",
+          "name": "Sean Perez",
+          "url": "https://seanperez.net/",
+          "image": "https://seanperez-net.github.io/og-image.png",
+          "sameAs": ["https://github.com/seanperez-net", "https://seanperez.net/"]
+        }
+      ]
+    }
+  </script>
+  <!-- 8. Speculation rules: when the pointer rests on the link to seanperez.net, the browser
+       fetches that page ahead of the click. Also a data block the browser reads, not a program.
+       Browsers without it ignore it. -->
+  <script type="speculationrules">
+    {
+      "prefetch": [
+        {
+          "where": { "href_matches": "https://seanperez.net/*" },
+          "eagerness": "moderate"
+        }
+      ]
+    }
+  </script>
 </head>
 
 <body>
