@@ -219,6 +219,10 @@
   --text-body-large--line-height: 1.5rem;
   --text-body-large--letter-spacing: 0.03125rem;
   --text-body-large--font-weight: 400;
+  --text-body-medium: 0.875rem;
+  --text-body-medium--line-height: 1.25rem;
+  --text-body-medium--letter-spacing: 0.015625rem;
+  --text-body-medium--font-weight: 400;
   --text-title-large: 1.375rem;
   --text-title-large--line-height: 1.75rem;
   --text-title-large--letter-spacing: 0rem;
@@ -413,6 +417,22 @@ body > footer > * {
 
 aside > * {
   inline-size: 16rem;
+}
+
+/*
+ * The footer's small print: Material 3 body-medium. One line of it fits inside the bottom
+ * margin, so it gets only the side inset and the margin stays the margin; anything taller
+ * still makes the track grow.
+ */
+body > footer > * {
+  padding-block: 0;
+}
+
+body > footer {
+  align-content: center;
+  font-size: var(--text-body-medium);
+  line-height: var(--text-body-medium--line-height);
+  letter-spacing: var(--text-body-medium--letter-spacing);
 }
 
 /* The app bar title and a pane's title: Material 3 title-large. */

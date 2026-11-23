@@ -17,9 +17,10 @@
 <body>
   <!--
     No JavaScript: every behaviour here is HTML and CSS (see style.css).
-    - The empty asides and footer are the page margins. They are aria-hidden while empty:
-      remove that when putting content in them.
-    - Icons are Material Symbols (Apache License 2.0, icons/LICENSE). The ones on buttons are
+    - The asides and the footer are the page margins, and grow to fit their content. The
+      asides are aria-hidden while empty: remove that when putting content in them.
+    - The code is MIT licensed (LICENSE). Icons are Material Symbols (Apache License 2.0,
+      icons/LICENSE). The ones on buttons are
       inline so they cost no request and take the theme colours; icons/ holds the source files.
   -->
   <div class="skip-link">
@@ -61,7 +62,13 @@
     </nav>
   </main>
   <aside id="end" aria-hidden="true"></aside>
-  <footer aria-hidden="true"></footer>
+  <footer>
+    <p>
+      © Sean Perez ·
+      <a href="https://github.com/seanperez-net/seanperez-net.github.io" rel="external"
+        title="Source code on GitHub (MIT licence)">Source</a>
+    </p>
+  </footer>
 </body>
 
 </html>
