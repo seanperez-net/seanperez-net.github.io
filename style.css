@@ -426,10 +426,13 @@ aside > * {
  */
 body > footer > * {
   padding-block: 0;
+  /* The lowest-emphasis text colour in Material 3: "outline". */
+  color: var(--color-outline);
 }
 
 body > footer {
   align-content: center;
+  text-align: center;
   font-size: var(--text-body-medium);
   line-height: var(--text-body-medium--line-height);
   letter-spacing: var(--text-body-medium--letter-spacing);
