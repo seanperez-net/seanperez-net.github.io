@@ -232,15 +232,12 @@
   --text-label-large--letter-spacing: 0.00625rem;
   --text-label-large--font-weight: 500;
 
-  /* Layout: Material 3. The margin is the space between the window edge and the content
-     (16px, and 24px from 600px wide); the app bar is 64px tall. */
+  /* Layout. The margin is the space between the window edge and the content: 16px at EVERY
+     width (owner, 2026-11-23: nothing may move when the window is resized). Material 3 uses 24px
+     from 600px; this page deliberately does not, so it never switches. The app bar is 64px tall. */
   --spacing-layout-margin: 1rem;
   --spacing-layout-gutter: 0.5rem;
   --spacing-layout-app-bar: 4rem;
-
-  @media (min-width: 600px) {
-    --spacing-layout-margin: 1.5rem;
-  }
 }
 
 /*
